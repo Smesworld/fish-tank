@@ -5,6 +5,8 @@ class GoFish extends Fish {
     this.surgeSecondsLeft = 0;
     this.maxSurge = 1.0;
     this.surgMult = 3.0;
+    this.imageUri = '/images/dolphin.png';
+    this.isTasty = false;
   }
 
   updateOneTick() {
@@ -15,6 +17,16 @@ class GoFish extends Fish {
       this.makeNewVelocity();
     }
     this.surgeSecondsLeft = Math.max(0, this.surgeSecondsLeft - PHYSICS_TICK_SIZE_S);
+
+    const near = this.tank.getProximateDenizens(this.position, 30);
+
+    for (const fish of near) {
+      if (fish.id !== this.id && !fish.isStarter && fish.isTasty) {
+        this.tank.removeDenizen(fish.id, 0);
+      }
+    }
+
+
   }
 
 
